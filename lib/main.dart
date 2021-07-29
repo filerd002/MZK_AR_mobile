@@ -31,9 +31,6 @@ class MyApp extends StatelessWidget {
 }
 
 
-
-
-
 class ArViewState extends State<ArViewWidget> with WidgetsBindingObserver {
   ArchitectWidget architectWidget;
   String wikitudeLicenseKey = "LICENSE EDU";
@@ -53,9 +50,12 @@ class ArViewState extends State<ArViewWidget> with WidgetsBindingObserver {
   }
 
   Future<void> onArchitectWidgetCreated() async {
-    this.architectWidget.load("web/index.html", onLoadSuccess, onLoadFailed);
     if (await Permission.camera.request().isGranted && await Permission.locationWhenInUse.request().isGranted ) {
-    this.architectWidget.resume();}
+      this.architectWidget.load("web/index.html", onLoadSuccess, onLoadFailed);
+      this.architectWidget.resume();}
+    else{
+      this.architectWidget.showAlert("Brak niezbędnych uprawnień","Nadaj z poziomu ustawień lub uruchom aplikacje ponownie");
+    }
   }
 
   @override void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -92,19 +92,6 @@ class ArViewState extends State<ArViewWidget> with WidgetsBindingObserver {
     }
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
-  }
-
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
   }
 
   @override
